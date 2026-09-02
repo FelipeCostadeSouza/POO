@@ -19,6 +19,7 @@ class Personagem{
 const heroi = new Personagem("Aragorn", 100)
 const Orphan_of_Kos = new Personagem("Kos", 350)
 console.log("Personagem criado: %s com %d PV.\n\n", heroi.nome, heroi.pontos_vida);
+console.log("Personagem criado: %s com %d PV.\n\n", Orphan_of_Kos.nome, Orphan_of_Kos.pontos_vida);
 
 Orphan_of_Kos.ataque(heroi, 30)
 Orphan_of_Kos.ataque(heroi, 80)
