@@ -342,39 +342,39 @@ heroi.adicionaritem(pocaoVida);
 heroi.adicionaritem(cartaocredito);
 heroi.listarinventario();
 
-const veneninho = new Veneno(2, 5, vilao);
+const veneninho = new Veneno(2, 5, Agiota);
 const regenzinho = new Regeneracao(2, 8, heroi);
 
-meuJogo.registrarObjeto(venenoNoVilao);
-meuJogo.registrarObjeto(regenNoHeroi);
+meuJogo.registrarObjeto(veneninho);
+meuJogo.registrarObjeto(regenzinho);
 console.log("\n--- INÍCIO DO COMBATE ---");
 
-heroi.atacar(vilao);
+heroi.atacar(Agiota);
 
-vilao.atacar(heroi);
+Agiota.atacar(heroi);
 
-arqueiro.atacar(vilao);
+arqueiro.atacar(Agiota);
 
-heroi.atacar(vilao);
+heroi.atacar(Agiota);
 
 meuJogo.passarTurno();
 
 console.log("\n--- COMBATE - TURNO 2 ---");
 
-arqueiro.atacar(vilao);
+arqueiro.atacar(Agiota);
 
-arqueiro.atacar(vilao);
+arqueiro.atacar(Agiota);
 
 (arqueiro.getArma() as Arco).RecarregarFlecha();
 
-vilao.atacar(heroi);
+Agiota.atacar(heroi);
 
-vilao.atacar(heroi);
+Agiota.atacar(heroi);
 
-(vilao.getArma() as Varinha).RegenerarMana(20);
+(Agiota.getArma() as Varinha).RegenerarMana(20);
 
 meuJogo.passarTurno();
 
 console.log("\n--- EVOLUÇÃO E NÍVEL ---");
 
-heroi.atacar(vilao); 
+heroi.atacar(Agiota); 
