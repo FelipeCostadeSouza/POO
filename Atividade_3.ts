@@ -321,29 +321,29 @@ class Regeneracao implements Efeito {
 
 const meuJogo = new Jogo();
 
-const espadaLendaria = new Espada("Excalibur", 15);
-const arcoLongo = new Arco("Arco Éfico", 12, 2); // Capacidade para 2 flechas
-const varinhaMágica = new Varinha("Cajado Elemental", 20, 30, 15); // Custa 15 de mana, total 30
+const espadaAmaldicoada = new Espada("Grass Sword", 15);
+const ArcoPequeno = new Arco("Arco", 12, 2); 
+const ArmadeFogo = new Varinha("Pistola", 20, 30, 15); 
 
-const heroi = new Personagem("Arthur", 50, espadaLendaria);
-const vilao = new Personagem("Morgoth", 60, varinhaMágica);
+const heroi = new Personagem("Finn", 50, espadaAmaldicoada);
+const Agiota = new Personagem("Lich", 60, ArmadeFogo);
 
-const arqueiro = new Personagem("Legolas", 40, arcoLongo);
+const arqueiro = new Personagem("Zagreus", 40, ArcoPequeno);
 
 meuJogo.registrarObjeto(heroi);
-meuJogo.registrarObjeto(vilao);
+meuJogo.registrarObjeto(Agiota);
 meuJogo.registrarObjeto(arqueiro);
 
 console.log("\n--- INVENTÁRIO E ITENS ---");
-const porcaoVida = new Item("Poção de Cura", 50);
-const gemaValiosa = new Item("Rubi", 100);
+const pocaoVida = new Item("Poção de Cura", 50);
+const cartaocredito = new Item("Rubi", 100);
 
-heroi.adicionaritem(porcaoVida);
-heroi.adicionaritem(gemaValiosa);
+heroi.adicionaritem(pocaoVida);
+heroi.adicionaritem(cartaocredito);
 heroi.listarinventario();
 
-const venenoNoVilao = new Veneno(2, 5, vilao);
-const regenNoHeroi = new Regeneracao(2, 8, heroi);
+const veneninho = new Veneno(2, 5, vilao);
+const regenzinho = new Regeneracao(2, 8, heroi);
 
 meuJogo.registrarObjeto(venenoNoVilao);
 meuJogo.registrarObjeto(regenNoHeroi);
