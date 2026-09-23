@@ -157,6 +157,49 @@ class Explosao implements Habilidades {
     }
 }
 
+class LarpAttack implements Habilidades {
+    private cooldown: Cooldown;
+    private dano: number = 67;
+    public custo: number = 6+7;
+
+    constructor(
+        public nome: string,
+    ) {
+        this.cooldown = new Cooldown(5);
+    }
+    alvomagia(usuario: Personagem, alvos: Personagem[]): number {
+        if (!this.cooldown.EstaDisponivel()) {
+            console.log(`${this.nome} está em cooldown!`);
+            return 0;
+        }
+        if (usuario.Manazinha() < this.custo) {
+            console.log(` ${usuario.nome} não tem mana suficiente para usar ${this.nome}!`);
+            return 0;
+        }
+        const alvo = alvos[0];
+        if (!alvo) {
+            console.log(`Nenhum alvo selecionado para ${this.nome}!`);
+            return 0;
+        }
+        usuario.gastarMana(this.custo);
+        this.cooldown.NaoPodeAtacar();
+        
+        console.log(`${usuario.nome} lança ${this.nome} em ${alvo.nome}!`);
+        alvo.tomardano(this.dano);
+        const veneninho = new Veneno(2, 5, alvo);
+        
+        if (jogo) {
+            jogo.registrarObjeto(veneninho);
+            console.log(`[EFEITO] ${alvo.nome} foi envenenado!`);
+        }
+        return 1;
+    }
+    novoTurno(): void {
+        this.cooldown.novoTurno();
+    }
+    
+}
+
 
 class Jogo {
     private Turnos: AtualizavelPorTurno[] = [];
@@ -506,63 +549,80 @@ class Regeneracao implements Efeito {
     }
 }
 
+const jogo = new Jogo();
 
-const meuJogo = new Jogo();
+const bastao = new Espada("Bastão de Madeira", 25);
+const tenis = new Varinha("Tênis Adidas", 15, 30, 10);
+const LetsLarp = new Arco("JustThisOnce", 20, 2);
 
-const espadaAmaldicoada = new Espada("Grass Sword", 15);
-const ArcoPequeno = new Arco("Arco", 12, 2); 
-const ArmadeFogo = new Varinha("Pistola", 20, 30, 15); 
+const bolaDeFogo = new BolaDeFogo("Bola de Fogo");
+const curaMagica = new Cura("Cura Celestial");
+const larpAttack = new LarpAttack("Ataque Larp");
 
-const heroi = new Personagem("Finn", 50, espadaAmaldicoada);
-const Agiota = new Personagem("Lich", 60, ArmadeFogo);
+const tralaTheo = new Personagem("TralaTheo", 100, tenis, 50);
+const ricardoSahur = new Personagem("Ricardo_Sahur", 120, bastao, 20);
 
-const arqueiro = new Personagem("Zagreus", 40, ArcoPequeno);
+tralaTheo.AdicionarMagia(bolaDeFogo);
+tralaTheo.AdicionarMagia(curaMagica);
 
-meuJogo.registrarObjeto(heroi);
-meuJogo.registrarObjeto(Agiota);
-meuJogo.registrarObjeto(arqueiro);
+ricardoSahur.AdicionarMagia(larpAttack);
 
-console.log("\n--- INVENTÁRIO E ITENS ---");
-const pocaoVida = new Item("Poção de Cura", 50);
-const cartaocredito = new Item("Rubi", 100);
+const porcaoVida = new Item("Pção de Vida", 50);
+const anelMagico = new Item("Anel de Mana", 150);
 
-heroi.adicionaritem(pocaoVida);
-heroi.adicionaritem(cartaocredito);
-heroi.listarinventario();
+tralaTheo.adicionaritem(porcaoVida);
+tralaTheo.adicionaritem(anelMagico);
+tralaTheo.listarinventario();
 
-const veneninho = new Veneno(2, 5, Agiota);
-const regenzinho = new Regeneracao(2, 8, heroi);
+jogo.registrarObjeto(tralaTheo);
+jogo.registrarObjeto(ricardoSahur);
 
-meuJogo.registrarObjeto(veneninho);
-meuJogo.registrarObjeto(regenzinho);
-console.log("\n--- INÍCIO DO COMBATE ---");
+const venenoNoRicardo = new Veneno(2, 5, ricardoSahur);
+const regenNoTheo = new Regeneracao(2, 10, tralaTheo);
 
-heroi.atacar(Agiota);
+jogo.registrarObjeto(venenoNoRicardo);
+jogo.registrarObjeto(regenNoTheo);
 
-Agiota.atacar(heroi);
+console.log("\n=================== INÍCIO DO COMBATE ===================");
 
-arqueiro.atacar(Agiota);
+console.log("\n--- Ações do Turno 1 ---");
 
-heroi.atacar(Agiota);
+tralaTheo.atacar(ricardoSahur);
 
-meuJogo.passarTurno();
+ricardoSahur.atacar(tralaTheo);
 
-console.log("\n--- COMBATE - TURNO 2 ---");
+ricardoSahur.usarHabilidade(0, [tralaTheo]);
 
-arqueiro.atacar(Agiota);
+jogo.passarTurno();
 
-arqueiro.atacar(Agiota);
 
-(arqueiro.getArma() as Arco).RecarregarFlecha();
+console.log("\n--- Ações do Turno 2 ---");
 
-Agiota.atacar(heroi);
+ricardoSahur.usarHabilidade(0, [tralaTheo]);
 
-Agiota.atacar(heroi);
+tralaTheo.usarHabilidade(0, [ricardoSahur]);
 
-(Agiota.getArma() as Varinha).RegenerarMana(20);
+console.log("\n[Troca de Arma]");
+ricardoSahur.EquiparArma(LetsLarp);
+ricardoSahur.atacar(tralaTheo); 
 
-meuJogo.passarTurno();
+jogo.passarTurno();
 
-console.log("\n--- EVOLUÇÃO E NÍVEL ---");
+console.log("\n--- Ações do Turno 3 ---");
 
-heroi.atacar(Agiota); 
+ricardoSahur.atacar(tralaTheo); 
+
+ricardoSahur.atacar(tralaTheo); 
+
+LetsLarp.RecarregarFlecha();
+
+tralaTheo.usarHabilidade(1, [tralaTheo]);
+
+tenis.RegenerarMana(20);
+
+jogo.passarTurno();
+
+console.log("\n--- Ações do Turno 4 ---");
+
+tralaTheo.atacar(ricardoSahur);
+tralaTheo.atacar(ricardoSahur);
