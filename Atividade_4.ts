@@ -25,7 +25,7 @@ class BolaDeFogo implements Habilidades {
             console.log(`${this.nome} está em cooldown!`);
             return 0;
         }
-        if (usuario.ManaAtual < this.custo) {
+        if (usuario.Manazinha() < this.custo) {
             console.log(` ${usuario.nome} não tem mana suficiente para usar ${this.nome}!`);
             return 0;
         }
@@ -62,7 +62,7 @@ class Cura implements Habilidades {
             console.log(`${this.nome} está em cooldown!`);
             return 0;
         }
-        if (usuario.ManaAtual < this.custo) {
+        if (usuario.Manazinha() < this.custo) {
             console.log(` ${usuario.nome} não tem mana suficiente para usar ${this.nome}!`);
             return 0;
         }
@@ -99,7 +99,7 @@ class GolpePoderoso implements Habilidades {
             console.log(`${this.nome} está em cooldown!`);
             return 0;
         }
-        if (usuario.ManaAtual < this.custo) {
+        if (usuario.Manazinha() < this.custo) {
             console.log(` ${usuario.nome} não tem mana suficiente para usar ${this.nome}!`);
             return 0;
         }
@@ -136,7 +136,7 @@ class Explosao implements Habilidades {
             console.log(`${this.nome} está em cooldown!`);
             return 0;
         }
-        if (usuario.ManaAtual < this.custo) {
+        if (usuario.Manazinha() < this.custo) {
             console.log(` ${usuario.nome} não tem mana suficiente para usar ${this.nome}!`);
             return 0;
         }
@@ -286,6 +286,10 @@ class Personagem implements AtualizavelPorTurno {
             this.VidaAtual = this.VidaMax;
         }
         console.log(`${this.nome} foi curado. Vida: ${this.VidaAtual}/${this.VidaMax}`);
+    }
+
+    Manazinha(): number{
+        return this.ManaAtual;
     }
 
     tavivo(): boolean {
